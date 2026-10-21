@@ -45,3 +45,13 @@ int num_linea = 1;
 "<"                     { fprintf(yyout, "MENOR ");      return MENOR; }
 ">"                     { fprintf(yyout, "MAYOR ");      return MAYOR; }
 ";"                     { fprintf(yyout, "PUNTOYCOMA "); return PUNTOYCOMA; }
+
+/* 6. ESPACIOS Y SALTOS DE LINEA */
+[ \t]+                  { }
+\r?\n                   { fprintf(yyout, "\n"); num_linea++; }
+
+    /* 7. ERRORES LEXICOS */
+.                       { printf("Error lexico en linea %d: '%s' no se reconoce\n", num_linea, yytext);
+                          fprintf(yyout, "ERROR "); }
+
+%%
