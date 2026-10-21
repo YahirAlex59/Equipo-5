@@ -45,7 +45,7 @@ void conectar(int padre, int hijo) {
 %left SUMA RESTA
 %left MULT DIV
 
-%type <nodo> sentencia declaracion
+%type <nodo> sentencia declaracion asignacion impresion expresion
 
 %start programa
 
@@ -84,3 +84,66 @@ declaracion
         conectar($$, $4);
     }
     ;
+asignacion
+    : VARIABLE ASIGNACION expresion {
+        $$ = crear_nodo("=");
+        conectar($$, crear_nodo($1));
+        conectar($$, $3);
+    }
+    ;
+
+impresion
+    : MOSTRAR expresion {
+        $$ = crear_nodo("IMPRIMIR");
+        conectar($$, $2);
+    }
+    ;
+
+expresion
+    : expresion SUMA expresion  { $$ = crear_nodo("+");  conectar($$, $1); conectar($$, $3); }
+    | expresion RESTA expresion { $$ = crear_nodo("-");  conectar($$, $1); conectar($$, $3); }
+    | expresion MULT expresion  { $$ = crear_nodo("*");  conectar($$, $1); conectar($$, $3); }
+    | expresion DIV expresion   { $$ = crear_nodo("/");  conectar($$, $1); conectar($$, $3); }
+    | expresion IGUAL expresion { $$ = crear_nodo("=="); conectar($$, $1); conectar($$, $3); }
+    | expresion MENOR expresion { $$ = crear_nodo("<");  conectar($$, $1); conectar($$, $3); }
+    | expresion MAYOR expresion { $$ = crear_nodo(">");  conectar($$, $1); conectar($$, $3); }
+    | ENTERO                    { $$ = crear_nodo($1); }
+    | DECIMAL                   { $$ = crear_nodo($1); }
+    | BOOLEANO                  { $$ = crear_nodo($1); }
+    | CARACTER                  { $$ = crear_nodo($1); }
+    | CADENA                    { $$ = crear_nodo($1); }
+    | VARIABLE                  { $$ = crear_nodo($1); }
+    ;
+
+%%
+
+void yyerror(const char *s) {
+    printf("Error sintactico en la linea %d: %s\n", num_linea, s);
+}
+
+int main(void) {
+    yyin = fopen("programac.txt", "r");
+    yyout = fopen("salida.txt", "w");
+    dot_file = fopen("arbol.dot", "w");
+
+    if (!yyin)  { perror("No se pudo abrir programac.txt"); return 1; }
+    if (!yyout) { perror("No se pudo abrir salida.txt"); fclose(yyin); return 1; }
+
+    fprintf(dot_file, "digraph AST {\n");
+    fprintf(dot_file, "    node [shape=box, fontname=\"Arial\"];\n");
+
+    crear_nodo("PROGRAMA");
+
+    printf("Analizando sintaxis de programac.txt...\n");
+
+    if (yyparse() == 0) {
+        printf("Sintaxis correcta! Archivo arbol.dot y salida.txt generados.\n");
+    }
+
+    fprintf(dot_file, "}\n");
+
+    fclose(dot_file);
+    fclose(yyin);
+    fclose(yyout);
+    return 0;
+}
