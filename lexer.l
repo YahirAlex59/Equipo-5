@@ -34,3 +34,14 @@ int num_linea = 1;
 
     /* 4. VARIABLES */
 [a-zA-Z_][a-zA-Z0-9_]*  { fprintf(yyout, "VARIABLE "); yylval.str = strdup(yytext); return VARIABLE; }
+
+    /* 5. OPERADORES Y SIMBOLOS */
+"+"                     { fprintf(yyout, "SUMA ");       return SUMA; }
+"-"                     { fprintf(yyout, "RESTA ");      return RESTA; }
+"*"                     { fprintf(yyout, "MULT ");       return MULT; }
+"/"                     { fprintf(yyout, "DIV ");        return DIV; }
+"=="                    { fprintf(yyout, "IGUAL ");      return IGUAL; }
+"="                     { fprintf(yyout, "ASIGNACION "); return ASIGNACION; }
+"<"                     { fprintf(yyout, "MENOR ");      return MENOR; }
+">"                     { fprintf(yyout, "MAYOR ");      return MAYOR; }
+";"                     { fprintf(yyout, "PUNTOYCOMA "); return PUNTOYCOMA; }
