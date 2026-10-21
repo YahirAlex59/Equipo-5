@@ -26,7 +26,7 @@ int num_linea = 1;
 "true"                  { fprintf(yyout, "BOOLEANO "); yylval.str = strdup(yytext); return BOOLEANO; }
 "false"                 { fprintf(yyout, "BOOLEANO "); yylval.str = strdup(yytext); return BOOLEANO; }
 
-/* 3. LITERALES */
+    /* 3. LITERALES */
 [0-9]+"."[0-9]+         { fprintf(yyout, "DECIMAL ");  yylval.str = strdup(yytext); return DECIMAL; }
 [0-9]+                  { fprintf(yyout, "ENTERO ");   yylval.str = strdup(yytext); return ENTERO; }
 '.'                     { fprintf(yyout, "CARACTER "); yylval.str = strdup(yytext); return CARACTER; }
@@ -46,7 +46,7 @@ int num_linea = 1;
 ">"                     { fprintf(yyout, "MAYOR ");      return MAYOR; }
 ";"                     { fprintf(yyout, "PUNTOYCOMA "); return PUNTOYCOMA; }
 
-/* 6. ESPACIOS Y SALTOS DE LINEA */
+    /* 6. ESPACIOS Y SALTOS DE LINEA */
 [ \t]+                  { }
 \r?\n                   { fprintf(yyout, "\n"); num_linea++; }
 
