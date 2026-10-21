@@ -93,7 +93,7 @@ int crear_nodo(const char *etiqueta) {
         fprintf(dot_file, "    node%d [label=\"%s\"];\n", id, etiqueta);
     }
     return id;
-
+}
 void conectar(int padre, int hijo) {
     if (hijo != 0) {
         fprintf(dot_file, "    node%d -> node%d;\n", padre, hijo);
