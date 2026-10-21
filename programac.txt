@@ -1,7 +1,7 @@
 Ent edad = 20;
 Npd promedio = 9.1;
 let grupo = 'A';
-logic inscrito = true;
-edad = edad + 1;
-
+logic activo = true;
+defin extra = 5 + 5;
+edad = edad + extra * 2;
 imp "Hola mundo";
